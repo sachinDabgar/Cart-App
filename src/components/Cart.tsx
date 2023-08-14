@@ -24,6 +24,7 @@ function Cart() {
     ];
 
     const [cartItems, setCartItems] = useState<Product[]>(initialProducts);
+    const [warning, setWarning] = useState("");
 
     const handleAddItem = (productId: number) => {
         setCartItems((prevItems) => {
@@ -40,14 +41,21 @@ function Cart() {
     };
 
     const handleRemoveItem = (productId: number) => {
-        const index = cartItems.findIndex((item) => item.id === productId);
-        if (cartItems[index].count > 0) {
-            cartItems[index] = {
-                ...cartItems[index],
-                count: cartItems[index].count - 1,
-            };
-            setCartItems(cartItems);
-        }
+        setCartItems((prevItems) => {
+            const updatedItems = [...prevItems];
+            const index = updatedItems.findIndex(
+                (item) => item.id === productId
+            );
+            if (updatedItems[index].count > 0) {
+                updatedItems[index] = {
+                    ...updatedItems[index],
+                    count: updatedItems[index].count - 1,
+                };
+            } else {
+                setWarning("add items to reduce");
+            }
+            return updatedItems;
+        });
     };
 
     const handleDeleteItem = (productId: number) => {
@@ -71,6 +79,15 @@ function Cart() {
                     Total Items:
                     {cartItems.reduce((total, item) => total + item.count, 0)}
                 </Typography>
+
+                {warning && (
+                    <Typography
+                        data-testid="warning"
+                        variant="body1"
+                    >
+                        {warning}
+                    </Typography>
+                )}
 
                 {cartItems.map((item) => (
                     <Card key={item.id}>

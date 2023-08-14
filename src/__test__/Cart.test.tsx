@@ -24,6 +24,17 @@ describe("Cart component", () => {
         expect(itemCountText.textContent).toBe("Total Items:0");
     });
 
+    it("removes an item from the cart without adding any items", () => {
+        render(<Cart />);
+        const removeBtns = screen.getAllByRole("button", { name: "-" });
+        fireEvent.click(removeBtns[0]);
+        const itemCountText = screen.getByTestId("total-items");
+        expect(itemCountText.textContent).toBe("Total Items:0");
+        expect(screen.getByTestId("warning").textContent).toBe(
+            "add items to reduce"
+        );
+    });
+
     it("deletes an item from the cart", () => {
         render(<Cart />);
         const removeBtns = screen.getAllByRole("button", { name: "Delete" });
