@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
     Button,
     Card,
@@ -27,6 +27,7 @@ function Cart() {
     const [warning, setWarning] = useState("");
 
     const handleAddItem = (productId: number) => {
+        setWarning("");
         setCartItems((prevItems) => {
             const updatedItems = [...prevItems];
             const index = updatedItems.findIndex(
@@ -41,6 +42,7 @@ function Cart() {
     };
 
     const handleRemoveItem = (productId: number) => {
+        setWarning("");
         setCartItems((prevItems) => {
             const updatedItems = [...prevItems];
             const index = updatedItems.findIndex(
@@ -59,12 +61,14 @@ function Cart() {
     };
 
     const handleDeleteItem = (productId: number) => {
+        setWarning("");
         setCartItems((prevItems) =>
             prevItems.filter((item) => item.id !== productId)
         );
     };
 
     const handleRefresh = () => {
+        setWarning("");
         setCartItems(initialProducts);
     };
 
